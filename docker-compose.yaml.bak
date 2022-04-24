@@ -1,0 +1,39 @@
+version: '1.1'
+
+services:
+
+  animal-planet-service:
+    image: jubydull/juby-animal-planet-service:0.0.1-SNAPSHOT
+    mem_limit: 1024m
+    ports:
+      - "8000:8000"
+    networks:
+      - animal-planet-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+
+ 
+  naming-server:
+    image: jubydull/juby-zoo-naming-server:0.0.1-SNAPSHOT
+    mem_limit: 1024m
+    ports:
+      - "8761:8761"
+    networks:
+      - animal-planet-network
+
+#docker run -p 9411:9411 openzipkin/zipkin:2.23
+
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - animal-planet-network
+    restart: always #Restart if there is a problem starting up
+
+networks:
+  animal-planet-network:
