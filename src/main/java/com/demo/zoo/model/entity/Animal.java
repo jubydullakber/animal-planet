@@ -30,9 +30,9 @@ public class Animal {
     private Long preference;
     @Version
     private Long version;
-    @OneToMany(mappedBy = "animals")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "animals" ,cascade = {CascadeType.ALL})
     private Set<Favorites> favorites;
-    @OneToMany(mappedBy = "animals")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "animals" ,cascade = {CascadeType.ALL})
     private Set<AnimalAssignRoom> animalAssignRooms;
     @Column(name = "STATUS")
     private char status;
